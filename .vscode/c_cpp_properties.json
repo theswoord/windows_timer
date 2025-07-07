@@ -1,0 +1,34 @@
+{
+    "configurations": [
+        {
+            "name": "Win32", 
+            "includePath": [
+                "${workspaceFolder}/**", 
+                // *** IMPORTANT: Add your MinGW and Windows SDK include paths here ***
+                // Example for MinGW-w64 through MSYS2:
+                "E:\\msys64\\mingw64\\bin",
+                "E:\\msys64\\mingw64\\include" // Often contains more specific headers
+
+                // Example for Windows SDK headers (paths vary based on SDK version and installation)
+                // If you have Visual Studio Build Tools installed, these might be located here:
+                // "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\ucrt",
+                // "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\shared",
+                // "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\um",
+                // "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\winrt",
+                // If you *don't* have VS Build Tools, MinGW's headers often contain necessary WinAPI definitions,
+                // but sometimes you might need a separate SDK if MinGW's are incomplete for advanced features.
+                // For a basic window, MinGW's own headers should suffice, assuming it's a full install.
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE" // Important for wide-character strings in WinAPI
+            ],
+            "compilerPath": "E:\\msys64\\mingw64\\bin\\g++.exe", // *** Your actual path to g++ ***
+            "cStandard": "c11", // Or "c17"
+            "cppStandard": "c++17", // Or "c++20", "c++14"
+            "intelliSenseMode": "windows-gcc-x64" // Or "windows-gcc-x86" for 32-bit
+        }
+    ],
+    "version": 4
+}

@@ -1,0 +1,46 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "timer", // A name for your task
+            "type": "shell",             // Run a shell command
+            "command": "g++",            // The compiler executable
+            "args": [
+                // Source files to compile
+                "${file}", // Compiles the currently open C++ file (good for single-file projects)
+                //  "*.cpp",
+                // OR: "main.cpp", "another_file.cpp" for specific files
+
+                // Output executable name
+                "-o",
+                "${fileDirname}\\timer.exe", // Creates .exe in current file's directory
+
+                // Linker flags for Windows API libraries
+                "-luser32", // Links the User32.lib for windowing
+                "-lgdi32",  // Links the GDI32.lib for graphics (if needed for basic drawing)
+                "-lkernel32", // Often implicitly linked, but good to include for core OS functions
+
+                // Optional: C++ standard (e.g., C++17)
+                "-std=c++17",
+
+                // Optional: Debugging information
+                "-g", // Include debugging symbols
+                "-D_UNICODE",
+                "-DUNICODE"
+            ],
+            "options": {
+                
+                "cwd" : "E:\\msys64\\mingw64\\bin"
+                // Ensure the path to g++ is correct if not in your system PATH
+                // If you installed MinGW via MSYS2, this might look like:
+                // "cwd": "C:\\msys64\\mingw64\\bin"
+                // Or ensure C:\msys64\mingw64\bin is added to your system's PATH environment variable.
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true // Make this the default build task
+            },
+            "problemMatcher": "$gcc" // Use GCC's problem matcher for error parsing
+        }
+    ]
+}
