@@ -4,7 +4,16 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <mmsystem.h>
 #define TIMER_1 1
+#define PAUSE_BUTTON 2
+#define RESET_BUTTON 3
+#define EDIT_BUTTON 4
+
+
+#define WIDTH 400
+#define HEIGHT 200
+
 
 #define CLASS_NAME L"timer2h"
 
@@ -12,7 +21,9 @@
 // learn CMAKE
 // #include <cstring.h>
 
-int i = 7200; // set timer
+int i = 5; // set timer
+int original = i;
+bool is_paused = false;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
@@ -35,12 +46,52 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                                WS_OVERLAPPEDWINDOW,
                                CW_USEDEFAULT,
                                CW_USEDEFAULT,
-                               400,
-                               200,
+                               WIDTH,
+                               HEIGHT,
                                NULL,
                                NULL,
                                hInstance,
                                NULL);
+
+    HWND hwndPauseButton = CreateWindow( 
+    L"BUTTON",  // Predefined class; Unicode assumed 
+    L"pause",      // Button text 
+    WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+    10,         // x position  FRONT END SUX
+    HEIGHT / 10,         // y position 
+    50,        // Button width
+    50,        // Button height
+    hwnd,     // Parent window
+    (HMENU) PAUSE_BUTTON,       // pass the ID 
+    (HINSTANCE)GetWindowLongPtr(hwnd, GWLP_HINSTANCE), 
+    NULL);      // Pointer not needed.
+
+
+        HWND hwndResetButton = CreateWindow( 
+    L"BUTTON",  // Predefined class; Unicode assumed 
+    L"RESET",      // Button text 
+    WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+    60,         // x position  FRONT END SUX
+    HEIGHT / 10,         // y position 
+    50,        // Button width
+    50,        // Button height
+    hwnd,     // Parent window
+    (HMENU) RESET_BUTTON,       // pass the ID 
+    (HINSTANCE)GetWindowLongPtr(hwnd, GWLP_HINSTANCE), 
+    NULL);      // Pointer not needed.
+
+            HWND hwndEditButton = CreateWindow( 
+    L"BUTTON",  // Predefined class; Unicode assumed 
+    L"edit",      // Button text 
+    WS_TABSTOP | WS_VISIBLE | WS_CHILD | WS_BORDER,  // Styles 
+    120,         // x position  FRONT END SUX
+    HEIGHT / 10,         // y position 
+    50,        // Button width
+    50,        // Button height
+    hwnd,     // Parent window
+    (HMENU) EDIT_BUTTON,       // pass the ID 
+    (HINSTANCE)GetWindowLongPtr(hwnd, GWLP_HINSTANCE), 
+    NULL);      // Pointer not needed.
 
     ShowWindow(hwnd, nCmdShow);
     // i++;
@@ -62,6 +113,30 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     switch (uMsg)
     {
+        case WM_COMMAND:
+            if (wParam == PAUSE_BUTTON) 
+            {
+                is_paused = !is_paused;
+                HWND hpause = GetDlgItem(hwnd,PAUSE_BUTTON);
+                SetWindowText(hpause , is_paused ? L"resume" : L"pause" );
+            }
+            if(wParam == RESET_BUTTON)
+            {
+                // if( )
+                KillTimer(hwnd, TIMER_1); 
+                SetTimer(hwnd,             // handle to main window
+                 TIMER_1,          // timer identifier
+                 1000,             // 10-second interval
+                 (TIMERPROC)NULL); // no timer callback
+                i = original;
+                InvalidateRect(hwnd,NULL,TRUE);
+                UpdateWindow(hwnd);
+                // is_paused = !is_paused;
+
+            }
+        break;
+
+
     case WM_CLOSE:           // When the user clicks the close button (X)
         DestroyWindow(hwnd); // Destroy the window
         KillTimer(hwnd, TIMER_1); 
@@ -74,9 +149,19 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                  (TIMERPROC)NULL); // no timer callback
         break;
     case WM_TIMER:
-            if(wParam == TIMER_1) // if wparam was called by TIMER_1
+            if(wParam == TIMER_1 && is_paused == false ) // if wparam was called by TIMER_1 | if i == 0 make sound hehe 
             {
-                i--;
+                if (i > 0)
+                {
+                    i--;
+                }
+                else
+                {
+                    // PlaySoundW(L"?", NULL, SND_ALIAS | SND_SYNC); ///// eeeeehhh ! lmohim anchof chi cool sound
+
+                    printf("end of the timer\n"); // andir  sound hnayaaa 
+                    KillTimer(hwnd, TIMER_1); 
+                }
                 int err = InvalidateRect(hwnd,NULL,TRUE);
                 // printf("%d ", err);
                 UpdateWindow(hwnd);
