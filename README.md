@@ -1,8 +1,10 @@
 # windows_timer
 a 2 hours timer (for now) creates a window that stays on top
 more features to add 
-- button to START / PAUSE the timer (URGENT)
-- Customisable timer not always 2 hours (NON IMPORTANT)
+- button to START / PAUSE the timer (URGENT) DONE
+- button to reset timer DONE
+- need ui improvement ( CAN WAIT )
+- Customisable timer not always 2 hours (URGENT)
 - sounds when finishes or get to a point (NON IMPORTANT)
 - background change (NON IMPORTANT)
 
